@@ -1513,28 +1513,10 @@ function renderSettings() {
       <div class="seg" role="group" aria-label="Difficulté">${Object.keys(DIFFS).map(k => `<button type="button" data-diff="${k}" aria-pressed="${save.diff === k}">${DIFFS[k].label}</button>`).join('')}</div></div>
     <div class="row col"><div class="t"><b>Progression</b><span>Efface tes monnaies, tes vaisseaux, tes mondes débloqués et tes records. Les réglages restent.</span></div>
       <div><button class="danger-btn" id="resetBtn" type="button">Effacer ma progression</button></div></div>
-    <div class="row col"><div class="t"><b>Outils de test</b><span>Pour essayer tout le jeu sans attendre. Ils modifient ta sauvegarde.</span></div>
-      <div class="tools">
-        <button class="tool-btn" type="button" data-test="cash">+1 000 ${TH.curLabel}</button>
-        <button class="tool-btn" type="button" data-test="skins">Tous les vaisseaux ici</button>
-        <button class="tool-btn" type="button" data-test="worlds">Ouvrir tous les mondes</button>
-      </div></div>
     <p class="about">Orbite · un jeu de <b>${AUTHOR}</b></p>`;
 }
 function applySoundBtn() { el.btnSound.classList.toggle('muted', !save.sound); }
-function testTool(k) {
-  if (k === 'cash') {
-    save.wallet[TH.id] += 1000; save.life[TH.id] += 1000; checkUnlocks(); persist();
-    toast('+1 000 ' + TH.curLabel);
-  } else if (k === 'worlds') {
-    save.unlocked = WORLDS.map(w => w.id); persist(); toast('Tous les mondes sont ouverts');
-  } else if (k === 'skins') {
-    save.owned[TH.id] = TH.skins.map(s => s.id); persist(); toast('Tous les vaisseaux de ' + TH.name);
-  }
-}
 el.setBody.addEventListener('click', e => {
-  const tb = e.target.closest('[data-test]');
-  if (tb) { testTool(tb.dataset.test); return; }
   const swb = e.target.closest('.sw');
   if (swb) {
     const k = swb.dataset.key; save[k] = !save[k]; persist();
